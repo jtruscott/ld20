@@ -1,0 +1,22 @@
+Attributes:
+
+Horn
+	- damage
+	- critrate
+	- armor
+	- regen
+	- size
+
+Body
+	- size
+	- armor
+	- regen
+	- speed
+	- 'handling'?
+	- acceleration
+	- thorns
+	
+Special
+	- lasers
+	- charge attack
+	
