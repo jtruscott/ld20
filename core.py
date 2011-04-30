@@ -1,5 +1,4 @@
-import pyglet
-import rabbyt
+import pyglet,rabbyt,sys
 import game
 
 from pyglet.window import key
@@ -15,10 +14,15 @@ def global_setup():
 	@w.event
 	def on_key_press(symbol,modifiers):
 		print key.symbol_string(symbol)
+		if symbol == key.C and modifiers & key.LCTRL:
+			sys.exit()
 	@w.event
 	def on_draw():
 		w.clear()
+		game.batch.draw()
 		fps.draw()
+	
+	
 if __name__ == '__main__':
 	init()
 	global_setup()

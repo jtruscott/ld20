@@ -1,7 +1,8 @@
-import config
-import pygame
+import pyglet
+import pymunk as pm
+import game
 
 class World:
 	def __init__(self):
-		self.viewport = pygame.Rect((0,0),config.size)
+		pass#self.viewport = 
 		
