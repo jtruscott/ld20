@@ -1,1 +1,3 @@
-size = (640,480)
+width = 640
+height = 480
+size = (width,height)
