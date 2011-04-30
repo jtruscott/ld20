@@ -4,25 +4,48 @@ import world as w
 import player as p
 import objects as o
 import config
-import pyglet
+import pygame
+from pygame.locals import *
+import logging
 
-title = "Narwhal Jousting!"
 objects = []
 class ColType:
 	player,terrain = range(900,902)
  
+log = logging.getLogger("game")
 def init():
 	#Build all the objects we use
-	global world,player,space,fps,objects,batch
-	batch = pyglet.graphics.Batch()
+	log.info("Building objects")
+	global groups,background,player,space,fps,objects,clock,loop,running
+	background = w.Background()
+	groups = {
+		'worldfx': pygame.sprite.RenderUpdates(),
+		'world': pygame.sprite.RenderUpdates(),
+		'player': pygame.sprite.RenderUpdates(),
+		'effects': pygame.sprite.RenderUpdates(),
+		'foes': pygame.sprite.RenderUpdates()
+		}
+	grouplist = (groups['worldfx'],groups['world'],groups['player'],groups['foes'],groups['effects'])
 	world = w.World()
 	player = p.Player()
 	space = pm.Space()
-	pyglet.clock.set_fps_limit(config.fps)
-	fps = pyglet.clock.ClockDisplay()
+	clock = pygame.time.Clock()
+	running = True
 	
-	def clock_update(dt):
-		for object in objects:
-			object.tick()
-			
-	pyglet.clock.schedule_interval(clock_update,1.0/config.fps)
+	def loop():
+		log.info("Entering game loop")
+		while running:
+			for event in pygame.event.get():
+				if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+					pygame.quit()
+					return
+			window.blit(background,background.get_rect())
+			world.update()
+			for group in grouplist:
+				group.update()
+			for group in grouplist:
+				group.draw(window)
+			#draw
+			pygame.display.flip()
+			clock.tick(config.fps)
+			pygame.display.set_caption("Narwhal Jousting! (%.1ffps)" % clock.get_fps())
